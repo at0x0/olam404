@@ -1,2 +1,3 @@
 gunicorn
-python
+python = "^3.8"
+discord = "^1.7.3"
