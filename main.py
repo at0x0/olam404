@@ -1,4 +1,6 @@
-from http.client import HTTPResponse
-import os
-def index(request):
-  return HTTPResponse("ola puyo")
+import aiohttp
+from aiohttp import web
+async def oli(request):
+  return web.Respones(text="ola puyo")
+
+web.run_app(app)
