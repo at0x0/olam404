@@ -1,1 +1,1 @@
-web: gunicorn olamsio:app
+web: python main.py
