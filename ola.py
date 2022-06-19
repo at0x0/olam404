@@ -1,3 +1,3 @@
 import os
 def index(request):
-  retunr HttpResponse("ola puyo")
+  return HttpResponse("ola puyo")
