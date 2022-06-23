@@ -5,7 +5,7 @@ import time
 import asyncio
 import aiohttp
 from aiohttp import web
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
 
 client = discord.Client()
@@ -48,6 +48,18 @@ class Webserver(commands.Cog):
             return 200
 
         self.webserver_port = os.environ.get('PORT', 5000)
+        app.add_routes(routes)
+
+    @tasks.loop()
+    async def web_server(self):
+        runner = web.AppRunner(app)
+        await runner.setup()
+        site = web.TCPSite(runner, host='0.0.0.0', port=self.webserver_port)
+        await site.start()
+
+    @web_server.before_loop
+    async def web_server_before_loop(self):
+        await self.bot.wait_until_ready()
 
 @bot.event
 async def on_ready():
