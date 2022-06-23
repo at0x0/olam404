@@ -4,6 +4,7 @@ import random
 import time
 import asyncio
 import aiohttp
+from aiohttp import web
 from discord.ext import commands
 from discord.ext.commands import MemberConverter
 
@@ -13,7 +14,6 @@ intents.members = True
 converter = MemberConverter()
 bot = commands.Bot(command_prefix = '!', intents=intents)
 server = client.get_guild("556557388161875975")
-loop = asyncio.get_event_loop()
 app = web.Application()
 routes = web.RouteTableDef()
 
