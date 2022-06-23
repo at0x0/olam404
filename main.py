@@ -125,6 +125,11 @@ async def on_message(message):
     if message.clean_content.startswith("!trade") and message.channel.name == "💱tradeo💱":
       await bot.process_commands(message)
 
+@app.route('/', methods=['GET'])
+async def endpoint():
+    canal = bot.get_channel(852689298368364544)
+    await canal.send("he recibido una conexion")
+    return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
 bot.run(os.getenv('TOKEN'))
