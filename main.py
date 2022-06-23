@@ -127,7 +127,7 @@ async def on_message(message):
 async def endpoint():
     canal = bot.get_channel(852689298368364544)
     valores = await request.get_data()
-    await canal.send("se ha recibido una conexion" + valores)
+    await canal.send(valores)
     return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
