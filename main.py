@@ -126,7 +126,7 @@ async def on_message(message):
 @app.route('/', methods=['GET'])
 async def endpoint():
     canal = bot.get_channel(852689298368364544)
-    await canal.send(dir(request))
+    await canal.send(dir("ola"))
     return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
