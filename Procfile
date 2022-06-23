@@ -1,1 +1,1 @@
-web: python main.py --bind localhost:5000
+web: python main.py --bind localhost:8080
