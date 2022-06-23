@@ -126,7 +126,7 @@ async def on_message(message):
 @app.route('/', methods=['GET'])
 async def endpoint():
     canal = bot.get_channel(852689298368364544)
-    valores = await request.get_data(as_text: Literal[True])
+    valores = await request.get_data(as_text: True)
     await canal.send(valores)
     return '', 200
 PORT = os.environ.get('PORT')
