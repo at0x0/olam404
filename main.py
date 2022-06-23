@@ -5,6 +5,7 @@ import time
 import asyncio
 import aiohttp
 from aiohttp import web
+from quart import Quart
 from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
 
@@ -14,12 +15,7 @@ intents.members = True
 converter = MemberConverter()
 bot = commands.Bot(command_prefix = '!', intents=intents)
 server = client.get_guild("556557388161875975")
-
-async def hello(request):
-    return web.Response(text="Hello, world")
-
-app = web.Application()
-app.add_routes([web.get('/', hello)])
+app = Quart(__name__)
 
 @bot.event
 async def on_ready():
@@ -128,5 +124,7 @@ async def on_message(message):
       await message.reply("<@&920856824025084024>") 
     if message.clean_content.startswith("!trade") and message.channel.name == "💱tradeo💱":
       await bot.process_commands(message)
+
+PORT = os.environ.get('PORT')
+bot.loop.create_task(app.run_task('0.0.0.0', PORT))
 bot.run(os.getenv('TOKEN'))
-web.run_app(app, port=os.getenv('PORT'))
