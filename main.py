@@ -22,9 +22,6 @@ async def hello(request):
 app = web.Application()
 app.add_routes([web.get('/', hello)])
 
-
-web.run_app(app, port=os.getenv('PORT'))
-
 @bot.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(bot))
@@ -133,3 +130,4 @@ async def on_message(message):
     if message.clean_content.startswith("!trade") and message.channel.name == "💱tradeo💱":
       await bot.process_commands(message)
 bot.run(os.getenv('TOKEN'))
+web.run_app(app, port=os.getenv('PORT'))
