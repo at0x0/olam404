@@ -3,6 +3,7 @@ import os
 import random
 import time
 import asyncio
+import aiohttp
 from discord.ext import commands
 from discord.ext.commands import MemberConverter
 
@@ -13,6 +14,40 @@ converter = MemberConverter()
 bot = commands.Bot(command_prefix = '!', intents=intents)
 server = client.get_guild("556557388161875975")
 loop = asyncio.get_event_loop()
+app = web.Application()
+routes = web.RouteTableDef()
+
+
+def setup(bot):
+    bot.add_cog(Webserver(bot))
+
+
+class Webserver(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self.web_server.start()
+
+        @routes.get('/')
+        async def welcome(request):
+            return web.Response(text="Hello, world")
+
+        @routes.post('/dbl')
+        async def dblwebhook(request):
+            if request.headers.get('authorization') == '3mErTJMYFt':
+                data = await request.json()
+                user = self.bot.get_user(data['user']) or await self.bot.fetch_user(data['user'])
+                if user is None:
+                    return
+                _type = f'Tested!' if data['type'] == 'test' else f'Voted!'
+                upvoted_bot = f'<@{data["bot"]}>'
+                embed = discord.Embed(title=_type, colour=discord.Color.blurple())
+                embed.description = f'**Upvoter :** {user.mention} Just {_type}' + f'\n**Upvoted Bot :** {upvoted_bot}'
+                embed.set_thumbnail(url=user.avatar_url)
+                channel = self.bot.get_channel(5645646545142312312)
+                await channel.send(embed=embed)
+            return 200
+
+        self.webserver_port = os.environ.get('PORT', 5000)
 
 @bot.event
 async def on_ready():
