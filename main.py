@@ -130,4 +130,3 @@ async def endpoint():
     return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
-bot.run(os.getenv('TOKEN'))
