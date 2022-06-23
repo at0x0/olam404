@@ -3,7 +3,7 @@ import os
 import random
 import time
 import asyncio
-from quart import Quart
+from quart import Quart, request
 from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
 
