@@ -18,7 +18,6 @@ server = client.get_guild("556557388161875975")
 async def hello(request):
     return web.Response(text="Hello, world")
 
-
 app = web.Application()
 app.add_routes([web.get('/', hello)])
 
