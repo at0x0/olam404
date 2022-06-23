@@ -3,8 +3,6 @@ import os
 import random
 import time
 import asyncio
-import aiohttp
-from aiohttp import web
 from quart import Quart
 from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
