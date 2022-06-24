@@ -127,7 +127,7 @@ async def on_message(message):
 async def endpoint():
     return '', 200
   
- @app.route('/sloots', methods=['POST'])
+@app.route('/sloots', methods=['POST'])
 async def endpoint():
     canal = bot.get_channel(852689298368364544)
     await canal.send(request.headers["Carta"])
