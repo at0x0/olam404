@@ -125,8 +125,12 @@ async def on_message(message):
 
 @app.route('/', methods=['GET'])
 async def endpoint():
+    return '', 200
+  
+ @app.route('/sloots', methods=['POST'])
+async def endpoint():
     canal = bot.get_channel(852689298368364544)
-    await canal.send(request.headers["Host"])
+    await canal.send(request.headers["Carta"])
     return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
