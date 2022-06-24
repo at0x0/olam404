@@ -3,7 +3,6 @@ import os
 import random
 import time
 import asyncio
-from typing import Literal
 from quart import Quart, request
 from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
@@ -127,7 +126,7 @@ async def on_message(message):
 @app.route('/', methods=['GET'])
 async def endpoint():
     canal = bot.get_channel(852689298368364544)
-    await canal.send(request.headers)
+    await canal.send(request.headers["Host"])
     return '', 200
 PORT = os.environ.get('PORT')
 bot.loop.create_task(app.run_task('0.0.0.0', PORT))
