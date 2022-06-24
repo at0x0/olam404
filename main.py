@@ -128,7 +128,7 @@ async def endpoint():
     return '', 200
   
 @app.route('/sloots', methods=['POST'])
-async def endpoint():
+async def slootsHandler():
     canal = bot.get_channel(852689298368364544)
     await canal.send(request.headers["Carta"])
     return '', 200
