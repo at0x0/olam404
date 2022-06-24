@@ -129,7 +129,7 @@ async def endpoint():
   
 @app.route('/sloots', methods=['POST'])
 async def slootsHandler():
-    canal = bot.get_channel(852689298368364544)
+    canal = bot.get_channel(902208191276912660)
     await canal.send("*Se ha canjeado la carta* **" + request.headers["Carta"] + "** *por el usuario:* **" + request.headers["Jugador"] + "**")
     return '', 200
 PORT = os.environ.get('PORT')
