@@ -51,8 +51,11 @@ async def trade(ctx):
     return
 
   def check(reaction, user):
-    if (user == userInter and str(reaction.emoji) == '✅') or (user == userInter and str(reaction.emoji) == '❌'):
+    if user == userInter and (str(reaction.emoji) == '✅' or str(reaction.emoji) == '❌'):
       return reaction
+  def checktwo(reaction, user):
+    if (user == userInter or user == ctx.author) and (str(reaction.emoji) == '✅' or str(reaction.emoji) == '❌'):
+      return reaction, user
   embedInCase = discord.Embed(description='⌛ **Esperando confirmación...** \n\n*Esperando a que* {0.mention} *acepte " ✅ " o rechace " ❌ " la petición*'.format(userInter), color=16743168)
   confMsg = await ctx.send(embed=embedInCase)
   await confMsg.add_reaction("✅")
@@ -60,20 +63,46 @@ async def trade(ctx):
   try:
     reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=check)
     await confMsg.edit(embed=embedInCase)
-  except asyncio.TimeoutError:
+  except asyncio.TimeoutError:  
     embedInCase = discord.Embed(description='⏰ **Petición Caducada** \n\n*Se ha agotado el tiempo de espera para completar la petición...*', color=15684176)
     await confMsg.edit(embed=embedInCase)
     return
   if reaction.emoji == '✅':
-    embedInCase = discord.Embed(description='✅ **Intercambio Exitoso** \n\n*¡Se ha completado el intercambio de roles exitosamente!*', color=2883328)
-    await ctx.author.remove_roles(rolOfrenda)
-    await ctx.author.add_roles(rolDeseado)
-    await userInter.remove_roles(rolDeseado)
-    await userInter.add_roles(rolOfrenda)
-    await confMsg.edit(embed=embedInCase)
-    return
+    await confMsg.remove_reaction("✅", userInter)
   if reaction.emoji == '❌':
     embedInCase = discord.Embed(description='❌ **Petición  Rechazada** \n\n*No se ha podido completar el intercambio de roles...*', color=15684176)
+    await confMsg.edit(embed=embedInCase)
+    return
+  embedInCase = discord.Embed(description='⚠️ **¿Estas seguro?** \n\n*Para completar el intercambio es necesario que los dos usuarios reaccionen con *"✅" *para confirmar que:* \n\n{uno.mention} dará {dos.mention} y obtendrá {tres.mention} \n{cuatro.mention} dará {tres.mention} y obtendrá {dos.mention} \n\n*En caso de no estar de acuerdo reaccionar con* "❌"'.format(uno = ctx.author, dos = rolOfrenda, tres = rolDeseado, cuatro = userInter), color=16763402)
+  await confMsg.edit(embed=embedInCase)
+  try:
+    pepe = True
+    greenVotes = 0
+    lever1 = 0
+    lever2 = 0
+    while pepe == True:
+      reaction, user = await bot.wait_for('reaction_add', timeout=60.0, check=checktwo)
+      if reaction.emoji == "✅":
+        if user == userInter and lever1 != 1:
+          greenVotes += 1
+          lever1 = 1
+        if user == ctx.author and lever2 != 1:
+          greenVotes += 1
+          lever2 = 1
+      if greenVotes >= 2:
+        embedInCase = discord.Embed(description='✅ **Intercambio Exitoso** \n\n*¡Se ha completado el intercambio de roles exitosamente!*', color=2883328)
+        await ctx.author.remove_roles(rolOfrenda)
+        await ctx.author.add_roles(rolDeseado)
+        await userInter.remove_roles(rolDeseado)
+        await userInter.add_roles(rolOfrenda)
+        await confMsg.edit(embed=embedInCase)
+        return
+      if reaction.emoji == "❌":
+        embedInCase = discord.Embed(description='❌ **Petición  Rechazada** \n\n*No se ha completado el intercambio de roles...*', color=15684176)
+        await confMsg.edit(embed=embedInCase)
+        return
+  except asyncio.TimeoutError:
+    embedInCase = discord.Embed(description='⏰ **Petición Caducada** \n\n*Se ha agotado el tiempo de espera para completar la petición...*', color=15684176)
     await confMsg.edit(embed=embedInCase)
     return
 @trade.error
